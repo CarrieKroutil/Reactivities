@@ -271,6 +271,9 @@ ServiceFabricBackup/
 *.ldf
 *.ndf
 
+# Ignore the default SQLite database. 
+*.db*
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
