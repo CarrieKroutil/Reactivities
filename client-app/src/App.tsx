@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import { Button, Header, List } from 'semantic-ui-react';
 
 function App() {
  // Hook: useState returns a stateful value, and a function to update it. 
@@ -52,17 +52,15 @@ useEffect(() => {
 // Note, the above [] empty list dependancy was used to not rerun effect indefinately and only if the list changes.
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <ul>
+    <div>
+        <Header as='h2' icon='users' content='activities'/>
+        <List>
           {activities.map((activity: any) => (
-            <li key={activity.id}>
+            <List.Item key={activity.id}>
               {activity.title}
-            </li>
+            </List.Item>
           ))}
-        </ul>
-      </header>
+        </List>
     </div>
   );
   // Note, because activity is not an interface, we needed to define it as any type to resolve compile errors, but is not type safe.
