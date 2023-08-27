@@ -273,6 +273,7 @@ ServiceFabricBackup/
 
 # Ignore the default SQLite database. 
 *.db*
+*/*.db
 
 # Business Intelligence projects
 *.rdl.data
