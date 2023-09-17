@@ -2,9 +2,14 @@
 import React from "react";
 import { Button, Container, Menu } from "semantic-ui-react";
 
+interface Props {
+    openForm: () => void;
+}
+
 // React components are really just functions that return jsx
-export default function NavBar() {
+export default function NavBar({openForm}: Props) {
     return (
+        // https://react.semantic-ui.com/collections/menu
         <Menu inverted fixed='top'>
             <Container>
                 <Menu.Item header>
@@ -13,7 +18,7 @@ export default function NavBar() {
                 </Menu.Item>
                 <Menu.Item name='Activities'></Menu.Item>
                 <Menu.Item>
-                    <Button positive content='Create Activity' />
+                    <Button onClick={openForm} positive content='Create Activity' />
                 </Menu.Item>
             </Container>
         </Menu>

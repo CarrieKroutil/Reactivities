@@ -3,13 +3,18 @@ import axios from 'axios';
 import { Button, Container, Header, List } from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
-
+import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 
 function App() {
   // Hook: useState returns a stateful value, and a function to update it. 
   // More: https://react.dev/reference/react/useState
   const [activities, setActivities] = useState<Activity[]>([]);
   // Note, the above [] inside useState gives our activities prop a default value of an empty list.
+
+  // useState is defined as either an Activity object or unioned "|" to be undefined and set to that as default.
+  const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
+
+  const [editMode, setEditMode] = useState(false);
 
   // In order to cause a side effect, when app/component is initiaized, need to tell app what to do when loading up. 
   // More: https://react.dev/reference/react/useEffect
@@ -53,21 +58,39 @@ function App() {
   }, []);
   // Note, the above [] empty list dependancy was used to not rerun effect indefinately and only if the list changes.
 
+  function handleSelectActivity(id: string) {
+    setSelectedActivity(activities.find(x => x.id === id));
+  }
+
+  function handleCancelSelectActivity(){
+    setSelectedActivity(undefined);
+  }
+
+  function handleFormOpen(id?: string) {
+    id ? handleSelectActivity(id) : handleCancelSelectActivity();
+    setEditMode(true);
+  }
+
+  function handleFormClose() {
+    setEditMode(false);
+  }
+
   return (
     // Only allowed to return a single element per React component, so using <Fragment> to group the NavBar and Container into one element.
     // Note: an empty <> element is the shortcut for fragment.
     <>
-      <NavBar />
+      <NavBar openForm={handleFormOpen} />
       <Container style={{marginTop: '7em'}}>
-        <List>
-          {activities.map(activity => (
-            <List.Item key={activity.id}>
-              {activity.title}
-            </List.Item>
-          ))}
-        </List>
+        <ActivityDashboard 
+          activities={activities} 
+          selectedActivity={selectedActivity}
+          selectActivity={handleSelectActivity}
+          cancelSelectActivity={handleCancelSelectActivity}
+          editMode={editMode}
+          openForm={handleFormOpen}
+          closeForm={handleFormClose}
+        />
       </Container>
-
     </>
   );
   // Note, because activity is not an interface, we needed to define it as any type to resolve compile errors, but is not type safe.
